@@ -1,0 +1,135 @@
+#!/bin/bash
+
+# Usage:
+#    gtload
+#        This will load the driver from the default configuration
+#        directory.  (Directory named: `uname -r`-`uname -m`)
+#    gtload [CONFIG]
+#        Where CONFIG is the configuration the module was built with.
+#        e.g. make CONFIG=whatever
+#        CONFIG is useful for cross-compiling.
+
+MODULE="scgt_module.ko"
+MODULE_NAME="scgt_module"
+DRIVER_DESC="SCRAMNet GT"
+PERM=666
+MAX_DEVICES=16
+DEV_FILE_PREFIX="/dev/scgt"
+LSMOD="lsmod"
+INSMOD="insmod"
+
+makenodes()
+{
+    # find major number...
+    MAJOR_NUM=`grep scgt /proc/devices | cut -f 1 -d ' '`
+
+    I=0;
+
+    while (("$I" < "$MAX_DEVICES"));
+    do
+        if [ -c "$DEV_FILE_PREFIX$I" ];
+        then
+            rm "$DEV_FILE_PREFIX$I";
+            if [ $? != 0 ];
+            then
+                echo "Unable to remove device file...";
+                exit 1;
+            fi
+        fi
+
+        mknod -m $PERM $DEV_FILE_PREFIX$I c $MAJOR_NUM $I
+
+        if [ $? != 0 ];
+        then
+            echo "Unable to create device file..."
+            exit 1;
+        fi
+
+        ((I++))
+    done
+}
+
+
+# loaddriver()
+#     usage: loaddriver <moduleDirectory>
+loaddriver()
+{
+    # Load the driver
+
+    if [ "`$LSMOD | grep $MODULE_NAME`" != "" ];
+    then
+        echo "A $DRIVER_DESC driver is already loaded!"
+        exit 1;
+    fi
+
+    if [ $# = 0 ];
+    then
+        echo "ERROR: MODDIR not specified.";
+        exit 1;
+    fi
+    
+    MODDIR=$1
+    
+    if [ -f $MODDIR/$MODULE ];
+    then
+        $INSMOD $MODDIR/$MODULE
+    else
+        echo "ERROR: Cannot find module file: $MODDIR/$MODULE";
+        echo "Unable to load driver"
+        exit 1;
+    fi
+
+    if [ $? != 0 ]; 
+    then
+        echo "Unable to load driver"
+        exit 1;
+    fi
+}
+
+# find insmod and lsmod
+which lsmod > /dev/null 2>&1;
+if [ $? != 0 ];
+then
+    # lsmod not in path.. try /sbin/lsmod
+    if [ -x /sbin/lsmod ]; 
+    then
+        LSMOD="/sbin/lsmod";
+    else
+        echo "Failed to locate lsmod program.  Make sure lsmod is in your path."
+        exit 1;    
+    fi
+fi
+
+which insmod > /dev/null 2>&1;
+if [ $? != 0 ];
+then
+    # insmod not in path.. try /sbin/lsmod
+    if [ -x /sbin/insmod ]; 
+    then
+        INSMOD="/sbin/insmod";
+    else
+        echo "Failed to locate insmod program.  Make sure insmod is in your path."
+        exit 1;    
+    fi
+fi
+
+
+# Setup the module directory (which directory the module resides in).
+
+if [ $# = 0 ];
+then
+    MACHINE=`uname -m`
+    KERNEL=`uname -r`
+    MODDIR=$KERNEL-$MACHINE
+else
+    MODDIR=$1
+fi
+
+echo Loading driver...
+loaddriver $MODDIR
+
+echo Creating device files...
+makenodes
+
+echo Success!
+exit 0

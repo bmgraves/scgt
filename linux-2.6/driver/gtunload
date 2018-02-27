@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Uninstall script for SCRAMNet GT driver
+#
+
+RMMOD="rmmod"
+
+# find rmmod if not in path
+which rmmod > /dev/null 2>&1;
+if [ $? != 0 ];
+then
+    # rmmod not in path.. try /sbin/rmmod
+    if [ -x /sbin/rmmod ]; 
+    then
+        RMMOD="/sbin/rmmod";
+    else
+        echo "Failed to locate rmmod program.  Make sure rmmod is in your path."
+        exit 1;
+    fi
+fi
+
+$RMMOD scgt_module
+
+if [ $? != "0" ];
+then
+    echo Unable to unload SCRAMNet GT driver.
+    exit 1;
+fi
+
+exit 0;
+
