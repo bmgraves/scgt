@@ -1,7 +1,7 @@
 #################### GT applications makefile ###################
 ####################        OS - Linux        ###################
 
-# MAKEFILE VERSION 1.4
+# MAKEFILE VERSION 1.6
 
 ##### Applications: ###########
 APPS = gttp gtmem gtnex gtmon gtprog gtint gtbert gtlat
@@ -10,7 +10,7 @@ APPS = gttp gtmem gtnex gtmon gtprog gtint gtbert gtlat
 TESTAPPS = gtspeed gtrand gtniv
 
 HDWARE_PLAT = $(shell uname -m)
-PLAT_DIR = ../../linux-2.6
+PLAT_DIR = ../../linux-3.10
 TARGET_DIR = $(PLAT_DIR)/bin
 COPY_DIR   = $(TARGET_DIR)_$(HDWARE_PLAT)
 USYS_DIR   = .

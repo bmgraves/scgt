@@ -1,6 +1,6 @@
 # SCRAMNet GT API makefile
 
-PLAT_DIR    = ../linux-2.6
+PLAT_DIR    = ../linux-3.10
 HDWARE_PLAT = $(shell uname -m)
 DEST_DIR    = $(PLAT_DIR)/lib
 COPY_DIR    = $(DEST_DIR)
