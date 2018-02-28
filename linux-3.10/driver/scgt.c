@@ -40,7 +40,7 @@
 #include <linux/version.h>
 
 #ifndef AUTOCONF_INCLUDED
-#if LINUX_VERSION_CODE > KERNEL_VERSION(3,10,0)
+#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,37)
     /* nothing needed */
 #else
 #include <linux/config.h>   /* config.h obsolete in some kernels 
