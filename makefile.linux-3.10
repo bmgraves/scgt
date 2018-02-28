@@ -1,5 +1,5 @@
 # Linux GT Makefile
-PLAT_DIR=linux-2.6
+PLAT_DIR=linux-3.10
 
 all: driver libscgt appli
 
@@ -9,16 +9,16 @@ driver:
 
 libscgt: 
 	@echo "################ BUILDING API #################"
-	make -C api/ -f makefile.linux-2.6
+	make -C api/ -f makefile.linux-3.10
 
 config:
 	make -C $(PLAT_DIR)/driver/ config
 
 appli: 
 	@echo "################ BUILDING APPS #################"  
-	make -C apps/gtutils -f egt.linux-2.6.mak
+	make -C apps/gtutils -f egt.linux-3.10.mak
 clean:
-	make -C api/ -f makefile.linux-2.6 clean
+	make -C api/ -f makefile.linux-3.10 clean
 	make -C $(PLAT_DIR)/driver/ clean
 
 realclean: clean
