@@ -13,6 +13,17 @@
 /* See the GNU General Public License for more details.                       */
 /*                                                                            */
 /******************************************************************************/
+/* This is a project fork for maintaining the driver for working with the      */
+/* 3.10 kernel in Redhat/Centos 7.                                             */
+/*																			   */
+/* This fork is created/maintained by Brandon M. Graves, https://metashell.net */
+/* up to date copies can be pulled from https://github.com/bmgraves/scgt	   */
+/*																			   */
+/* It is important to note all credit to the original Developer, this is merely*/
+/* an ongoing support project to test for functionality in future maintained   */
+/* version of linux for legacy cards.										   */
+/*																			   */
+/*******************************************************************************/
 
 /******************************************************************************/
 /*                                                                            */
@@ -29,7 +40,7 @@
 #include <linux/version.h>
 
 #ifndef AUTOCONF_INCLUDED
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,37)
+#if LINUX_VERSION_CODE > KERNEL_VERSION(3,10,0)
     /* nothing needed */
 #else
 #include <linux/config.h>   /* config.h obsolete in some kernels 

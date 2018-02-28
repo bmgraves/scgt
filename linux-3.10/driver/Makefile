@@ -1,6 +1,6 @@
 #
-# SCRAMNet GT driver Makefile for Linux 2.6 
-#
+# SCRAMNet GT driver Makefile for Linux 3.10 
+# Updated by Brandon M. Graves, Original work By
 
 #
 # Usage:
